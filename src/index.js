@@ -10,8 +10,12 @@ const port = process.env.PORT
 const publicDirectoryPath = path.join(__dirname, '../public')
 app.use(express.static(publicDirectoryPath))
 
-io.on('connection', () => {
-console.log('New WebSocket connection!')
+io.on('connection', (socket) => {
+    socket.emit("message", "welcome")
+    socket.on('sendMessage', (msg) => {
+        io.emit("message", msg)
+    })
+
 })
 
 server.listen(port, () => {
